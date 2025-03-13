@@ -13,7 +13,21 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<BowlerDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("BowlerConnection")));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactApp",
+        policy =>
+        {
+            policy.AllowAnyOrigin() // ✅ Allows React to access the API
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
+
 var app = builder.Build();
+
+app.UseCors("AllowReactApp"); // Apply CORS policy
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

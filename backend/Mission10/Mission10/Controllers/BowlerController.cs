@@ -4,23 +4,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Mission10.Controllers
 {
-    [Route("/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class BowlerController : ControllerBase
     {
-        private BowlerDbContext _bowlerContext;
+        private readonly BowlerDbContext _bowlerContext;
 
         public BowlerController(BowlerDbContext temp)
         {
             _bowlerContext = temp;
         }
 
-        [HttpGet(Name = "GetBowlerInfo")]
-        public IEnumerable<Bowler> Get()
+        // ✅ Get all bowlers
+        [HttpGet("bowlers")]
+        public IEnumerable<Bowler> GetBowlers()
         {
-            var bowlerList = _bowlerContext.Bowlers.ToList();
-            
-            return (bowlerList);
+            return _bowlerContext.Bowlers.ToList();
+        }
+
+        // ✅ Get all teams
+        [HttpGet("teams")]
+        public IEnumerable<Team> GetTeams()
+        {
+            return _bowlerContext.Teams.ToList();
         }
     }
 }
